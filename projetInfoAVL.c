@@ -1,13 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct chainon{
+    int ID;
+    int cap;
+    int conso;
+}Chainon;
+
 typedef struct tree{
-    int value;
+    Chainon* c;
     struct tree* pLeft;
     struct tree* pRight;
     int balance;
 }Tree;
-
 
 int max2(int v1, int v2){
     if(v1 > v2){
@@ -31,12 +36,23 @@ int min3(int v1, int v2, int v3){
     return min2(v1, min2(v2, v3));
 }
 
-Tree* createAVL(int v){
+Chainon* createChainon(int id, int CAP, int CONSO){
+    Chainon* new = malloc(sizeof(Chainon));
+    if(new == NULL){
+        exit;
+    }
+    new->ID = id;
+    new->cap = CAP;
+    new->conso = CONSO;
+    return new; 
+}
+
+Tree* createAVL(Chainon* c){
     Tree* pRoot = malloc(sizeof(Tree));
     if(pRoot == NULL){
         exit;
     }
-    pRoot->value = v;
+    pRoot->c = c;
     pRoot->pLeft = NULL;
     pRoot->pRight = NULL;
     pRoot->balance = 0;
@@ -118,24 +134,26 @@ Tree* balanceAVL(Tree* pRoot){
     return pRoot;
 }
 
-Tree* insertAVL(Tree* pRoot, int v, int* h){
+Tree* insertAVL(Tree* pRoot, Chainon* c, int* h){
     if(pRoot == NULL){
         *h = 1;
-        pRoot = createAVL(v);
+        pRoot = createAVL(c);
         if(pRoot == NULL){
             exit;
         }
         return pRoot;
     }
-    else if(v < pRoot->value){
-        pRoot->pLeft = insertAVL(pRoot->pLeft, v, h);
+    else if(c->ID < pRoot->c->ID){
+        pRoot->pLeft = insertAVL(pRoot->pLeft, c, h);
         *h = -*h;
     }
-    else if(v > pRoot->value){
-        pRoot->pRight = insertAVL(pRoot->pRight, v, h);
+    else if(c->ID > pRoot->c->ID){
+        pRoot->pRight = insertAVL(pRoot->pRight, c, h);
     }
     else{
         *h = 0;
+        pRoot->c->cap = pRoot->c->cap + c->cap;
+        pRoot->c->conso = pRoot->c->conso + c->conso;
         return pRoot;
     }
     if(*h != 0){
@@ -151,68 +169,41 @@ Tree* insertAVL(Tree* pRoot, int v, int* h){
     return pRoot;
 }
 
-Tree* suppMinAVL(Tree* pRoot, int* h, int* pe){
-    if(pRoot->pLeft == NULL){
-        *pe = pRoot->value;
-        *h = -1;
-        Tree* tmp = pRoot;
-        pRoot = pRoot->pRight;
-        free(tmp);
-        return pRoot;
-    }
-    else{
-        pRoot->pLeft = suppMinAVL(pRoot->pLeft, h, pe);
-        *h =-*h;
-    }
-    if(*h != 0){
-        pRoot->balance = pRoot->balance+*h;
-        if(pRoot->balance == 0){
-            *h = -1;
-        }
-        else{
-            *h = 0;
-        }
-    }
-    return pRoot;
-}
-
-Tree* removeAVL(Tree* pRoot, int v, int* h){
-    if(pRoot == NULL){
-        *h = 1;
-        return pRoot;
-    }
-    if(v < pRoot->value){
-        pRoot->pLeft = removeAVL(pRoot->pLeft, v, h);
-        *h = -*h;
-    }
-    else if(v > pRoot->value){
-        pRoot->pRight = removeAVL(pRoot->pRight, v, h);
-    }else if(pRoot->pRight != NULL){
-        pRoot->pRight = suppMinAVL(pRoot->pRight, h, &(pRoot->value));
-    }
-    else{
-        Tree* tmp = pRoot;
-        pRoot = pRoot->pRight;
-        free(tmp);
-        *h = -1;
-        return pRoot;
-    }
-    if(*h != 0){
-        pRoot->balance = pRoot->balance+*h;
-        if(pRoot->balance == 0){
-            *h = -1;
-        }
-        else{
-            *h = 0;
-        }
-    }
-    return pRoot;
-}
-
 void infix(Tree* p){
     if(p != NULL){
         infix(p->pLeft);
-        printf("[%02d(%2d)]", p->value, p->balance);
+        printf("[%02d(%2d)]", p->c->ID, p->balance);
+        printf("cap = %d conso = %d\n", p->c->cap, p->c->conso);
         infix(p->pRight);
     }
+}
+
+void remplissage(Tree* pRoot, FILE* file){
+    if(pRoot != NULL){
+        remplissage(pRoot->pLeft, file);
+        fprintf(file, "%d:%d:%d\n", pRoot->c->ID, pRoot->c->cap, pRoot->c->conso);
+        remplissage(pRoot->pRight, file);
+    }
+}
+
+int main(){
+    Chainon* new;
+    Tree* AVL;
+    int id, CAP, CONSO, h=0;
+    while(scanf("%d;%d;%d\n", &id, &CAP,&CONSO) == 3){
+        new = createChainon(id, CAP, CONSO);
+        AVL = insertAVL(AVL, new, &h);
+    }
+    infix(AVL);
+    printf("\n");
+
+    FILE* file;
+    file = fopen("resultat.csv","w");
+    if (file == NULL){
+        exit;
+    }
+    fprintf(file, "ID:cap:conso\n");
+    remplissage(AVL, file);
+    printf("Fichier CSV créé avec succès : data.csv\n");
+    return 0;
 }
