@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Nom du fichier passé en argument
+
 file="$1"
 var="$2"
 touch "tempresult6.txt"
