@@ -43,6 +43,17 @@ do
 	fi
 done
 
+for list in `ls`
+do
+	if [[ $list == "tmp" ]] ; then
+		
+	fi
+	
+	if [[ $list == "graphs" ]] ; then
+		
+	fi
+done
+
 if [[ $# -ne 3 ] || [[ $# -ne 4 ] ; then
 do
 	echo "Erreur : mauvais nombre d'arguments"
@@ -78,52 +89,6 @@ case "$2_$3" in
 		;;
 		
 esac
-
-
-
-# A revoir pour transformer les if en switch case
-centrale=0
-if [ -n $4 ] ; then
-	if [ $4 -gt 0 ] && [ $4 -lt 4 ] ; then
-		centrale=$4
-	fi
-fi
-
-if [[ "$2" == "-h" ]] ; then
-	help()
-
-elif [[ "$2" == 'hvb' ]] ; then
-	if [[ "$3" == "comp" ]] ; then
-		echo oui
-	else
-		echo Type de consommateur incorrect 
-		help()
-	fi
-	
-elif [[ "$2" == "hva" ]] ; then
-	if [[ "$3" == "comp" ]] ; then
-		echo oui
-	else
-		echo Type de consommateur incorrect
-		help()
-	fi
-	
-elif [[ "$2" == "lv" ]] ; then
-	if [[ "$3" == "comp" ]] ; then
-		echo oui
-	elif [[ "$3" == "indiv" ]] ; then
-		echo oui
-	elif [[ "$3" == "all" ]] ; then
-		echo oui
-	else
-		echo Type de consommateur incorrect
-		help()
-	fi
-	
-else
-	echo Type de station incorrect
-	help()
-fi
 
 
 
