@@ -6,7 +6,8 @@
 #filtrer les lignes
 #grep -o MOTIF data.csv 
 
-
+#tri
+#cat data.txt | grep  | cut -d ';' -f 3,4 | ./exec
 
 
 help(){
@@ -36,6 +37,7 @@ help(){
 	echo 	• si cette option est absente, les traitements seront effectués sur toutes les centrales du fichier
 }
 
+#regarde pour un -h
 for arg in $@
 do
 	if [[ $arg == "-h" ]] ; then
@@ -46,21 +48,26 @@ done
 for list in `ls`
 do
 	if [[ $list == "tmp" ]] ; then
-		
-	fi
-	
-	if [[ $list == "graphs" ]] ; then
-		
+		rm tmp/*
 	fi
 done
 
-if [[ $# -ne 3 ] || [[ $# -ne 4 ] ; then
+#test nombre arguments
+if [ $# -ne 3 ] || [ $# -ne 4 ] ; then
 do
 	echo "Erreur : mauvais nombre d'arguments"
 fi
 
+#recuperation centrale
+if [ $# -eq 4 ] ; then
+	centrale=$4
+	#tri centrale
+else
+	centrale=0
+fi
 
-# Revision des if par un swicth case
+
+
 case "$2_$3" in
 	
 	"hvb_comp")
@@ -89,6 +96,7 @@ case "$2_$3" in
 		;;
 		
 esac
+
 
 
 
