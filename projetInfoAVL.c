@@ -4,8 +4,8 @@
 
 typedef struct chainon{
     int ID;
-    int cap;
-    int conso;
+    long cap;
+    long conso;
 }Chainon;
 
 typedef struct tree{
@@ -37,7 +37,7 @@ int min3(int v1, int v2, int v3){
     return min2(v1, min2(v2, v3));
 }
 
-Chainon* createChainon(int id, int CAP, int CONSO){
+Chainon* createChainon(int id, long CAP, long CONSO){
     Chainon* new = malloc(sizeof(Chainon));
     if(new == NULL){
         exit;
@@ -190,8 +190,9 @@ void remplissage(Tree* pRoot, FILE* file){
 int main(){
     Chainon* new;
     Tree* AVL;
-    int id, CAP, CONSO, h=0;
-    while(scanf("%d;%d;%d\n", &id, &CAP,&CONSO) == 3){
+    int id;
+    long CAP, CONSO, h=0;
+    while(scanf("%d;%ld;%ld\n", &id, &CAP,&CONSO) == 3){
         new = createChainon(id, CAP, CONSO);
         AVL = insertAVL(AVL, new, &h);
     }
@@ -199,7 +200,7 @@ int main(){
     printf("\n");
 
     FILE* file;
-    file = fopen("resultat.csv","w");
+    file = fopen("resultat.txt","w");
     if (file == NULL){
         exit;
     }
