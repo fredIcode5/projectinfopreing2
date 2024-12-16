@@ -45,12 +45,32 @@ do
 	fi
 done
 
+
+
+#test tmp et graphs
+temp=0
+graph=0
 for list in `ls`
 do
 	if [[ $list == "tmp" ]] ; then
+		temp=1
 		rm tmp/*
 	fi
+	
+	if [[ $list == "graphs" ]] ; then
+		graph=1
+	fi
 done
+
+if [ $temp -eq 0 ] ; then
+	mkdir tmp
+fi
+
+if [ $graph -eq 0 ] ; then
+	mkdir graphs
+fi
+
+
 
 #test nombre arguments
 if [ $# -ne 3 ] || [ $# -ne 4 ] ; then
@@ -58,7 +78,8 @@ do
 	echo "Erreur : mauvais nombre d'arguments"
 fi
 
-#recuperation centrale
+#recuperation centrale et fichier tmp de la centrale
+fichier=$1
 if [ $# -eq 4 ] ; then
 	centrale=$4
 	#tri centrale
@@ -67,19 +88,20 @@ else
 fi
 
 
+tr '-' '0' < "$fichier" > temp && mv temp "$fichier"
 
 case "$2_$3" in
 	
 	"hvb_comp")
-		echo hvb_comp
+		grep -E '^[^;]*;[^0;]*;[^;]*;[0]+' "$fichier"|cut -d';' -f 2,7,8 >> projetInfoAVL.c 
 		;;
 		
 	"hva_comp")
-		echo hva_comp
+		grep -E '^[^;]*;[^;]*;[^0;];[0]+' "$fichier"|cut -d';' -f 3,7,8 >> projetInfoAVL.c
 		;;
 	
 	"lv_comp")
-		echo lv_comp
+		grep -E '^[^;]*;[^;]*;[^;]*;[^0;];[0]+' "$fichier"|cut -d';' -f 4,7,8 >> projetInfoAVL.c 
 		;;
 	
 	"lv_indiv")
