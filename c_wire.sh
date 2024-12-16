@@ -41,9 +41,15 @@ help(){
 for arg in $@
 do
 	if [[ $arg == "-h" ]] ; then
-		help()
+		help
 	fi
 done
+
+
+
+#test compil du c
+
+
 
 
 
@@ -54,7 +60,7 @@ for list in `ls`
 do
 	if [[ $list == "tmp" ]] ; then
 		temp=1
-		rm tmp/*
+	#	rm tmp/*
 	fi
 	
 	if [[ $list == "graphs" ]] ; then
@@ -73,10 +79,11 @@ fi
 
 
 #test nombre arguments
-if [ $# -ne 3 ] || [ $# -ne 4 ] ; then
-do
+if [ $# -ne 3 ] && [ $# -ne 4 ] ; then
 	echo "Erreur : mauvais nombre d'arguments"
 fi
+
+
 
 #recuperation centrale et fichier tmp de la centrale
 fichier=$1
@@ -93,15 +100,15 @@ tr '-' '0' < "$fichier" > temp && mv temp "$fichier"
 case "$2_$3" in
 	
 	"hvb_comp")
-		grep -E '^[^;]*;[^0;]*;[^;]*;[0]+' "$fichier"|cut -d';' -f 2,7,8 >> projetInfoAVL.c 
+		grep -E '^[^;]*;[^0;]*;[^;]*;[0]+' "$fichier"|cut -d';' -f 2,7,8 | ./exec 
 		;;
 		
 	"hva_comp")
-		grep -E '^[^;]*;[^;]*;[^0;];[0]+' "$fichier"|cut -d';' -f 3,7,8 >> projetInfoAVL.c
+		grep -E '^[^;]*;[^;]*;[^0;];[0]+' "$fichier"|cut -d';' -f 3,7,8 | ./exec
 		;;
 	
 	"lv_comp")
-		grep -E '^[^;]*;[^;]*;[^;]*;[^0;];[0]+' "$fichier"|cut -d';' -f 4,7,8 >> projetInfoAVL.c 
+		grep -E '^[^;]*;[^;]*;[^;]*;[^0;];[0]+' "$fichier"|cut -d';' -f 4,7,8 | ./exec
 		;;
 	
 	"lv_indiv")
@@ -114,7 +121,7 @@ case "$2_$3" in
 	
 	*)
 		echo "Erreur : arguments non cohérents"
-		help()
+		help
 		;;
 		
 esac
