@@ -100,7 +100,7 @@ tr '-' '0' < "$fichier" > temp && mv temp "$fichier"
 case "$2_$3" in
 	
 	"hvb_comp")
-		grep -E '^[^;]*;[^0;]*;[^;]*;[0]+' "$fichier"|cut -d';' -f 2,7,8 | ./exec 
+		grep -E '^[^;]*;[^0;]*;[0;]*;[0]+' "$fichier"|cut -d';' -f 2,7,8 | ./exec 
 		;;
 		
 	"hva_comp")
