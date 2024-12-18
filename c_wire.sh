@@ -60,7 +60,9 @@ for list in `ls`
 do
 	if [[ $list == "tmp" ]] ; then
 		temp=1
-	#	rm tmp/*
+		cd tmp
+		rm *
+		cd ..
 	fi
 	
 	if [[ $list == "graphs" ]] ; then
@@ -90,6 +92,7 @@ fichier=$1
 if [ $# -eq 4 ] ; then
 	centrale=$4
 	#tri centrale
+	#faire fichier tmp de la centrale en particulier
 else
 	centrale=0
 fi
@@ -117,6 +120,11 @@ case "$2_$3" in
 	
 	"lv_all")
 		echo lv_all
+		#faire le grep
+		#reprendre le fichier résultat
+		#faire la différence (capa-conso)
+		#puis trier les lv par ordre croissant de la différence
+		#refaire un fichier résultat final après le tri (format normal pas de colonne de la différence)
 		;;	
 	
 	*)
@@ -125,9 +133,3 @@ case "$2_$3" in
 		;;
 		
 esac
-
-
-
-
-
-
