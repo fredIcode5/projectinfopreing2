@@ -190,8 +190,8 @@ void remplissage(Tree* pRoot, FILE* file){
 int main(){
     Chainon* new;
     Tree* AVL;
-    int id;
-    long CAP, CONSO, h=0;
+    int id, h=0;
+    long CAP, CONSO;
     while(scanf("%d;%ld;%ld\n", &id, &CAP,&CONSO) == 3){
         new = createChainon(id, CAP, CONSO);
         AVL = insertAVL(AVL, new, &h);
@@ -200,7 +200,7 @@ int main(){
     printf("\n");
 
     FILE* file;
-    file = fopen("resultat.txt","w");
+    file = fopen("resultat.csv","w");
     if (file == NULL){
         exit;
     }
