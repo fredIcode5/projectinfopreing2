@@ -94,7 +94,7 @@ if [ $# -eq 4 ] ; then
 	#tri centrale
 	#faire fichier tmp de la centrale en particulier
 else
-	centrale=0
+	centrale="."
 fi
 
 
@@ -105,7 +105,6 @@ case "$2_$3" in
 	
 	"hvb_comp")
 		output_file="hvb_comp.csv"
-		touch test.csv 
 		echo "ID;capacité;consomation" > "$output_file"
 		cat $1 | grep -E '^[^;]*;[^-;]*;[-];[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		cat $output_file
@@ -114,20 +113,24 @@ case "$2_$3" in
 		;;
 		
 	"hva_comp")
-		grep -E '^[^;]*;[^;]*;[^0;];[0]+' "$fichier" | tr '-' '0' | cut -d';' -f 3,7,8 | ./exec
+		output_file="hva_comp.csv"
+		cat $1 | grep -E '^[^;]*;[^;];[^-;];[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		;;
 	
 	"lv_comp")
-		grep -E '^[^;]*;[^;]*;[^;]*;[^0;];[0]+' "$fichier" | tr '-' '0' | cut -d';' -f 4,7,8 | ./exec
+		output_file="lv_comp.csv"
+		cat $1 | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;[^-;]*;[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		;;
 	
 	"lv_indiv")
-		grep -E '^[^;]*;[^;]*;[^;]*;[0];[^0;]+' "$fichier" | tr '-' '0' | cut -d';' -f 4,7,8 | ./exec
+		output_file="lv_indiv.csv"
+		cat $1 | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;[-];[^-;]*;'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		echo lv_indiv
 		;;
 	
 	"lv_all")
-		grep -E '^[^;]*;[^;]*;[^;]*;[^0;];[0]+' "$fichier" | tr '-' '0' | cut -d';' -f 4,7,8 | ./exec
+		output_file="lv_all.csv"
+		cat $1 | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		echo lv_all
 		#faire le grep
 		#reprendre le fichier résultat
