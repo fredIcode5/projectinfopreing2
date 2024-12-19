@@ -4,8 +4,8 @@
 
 typedef struct chainon{
     int ID;
-    long cap;
-    long conso;
+    long long cap;
+    long long conso;
 }Chainon;
 
 typedef struct tree{
@@ -37,7 +37,7 @@ int min3(int v1, int v2, int v3){
     return min2(v1, min2(v2, v3));
 }
 
-Chainon* createChainon(int id, long CAP, long CONSO){
+Chainon* createChainon(int id, long long CAP, long long CONSO){
     Chainon* new = malloc(sizeof(Chainon));
     if(new == NULL){
         exit;
@@ -173,32 +173,31 @@ Tree* insertAVL(Tree* pRoot, Chainon* c, int* h){
 void infix(Tree* p){
     if(p != NULL){
         infix(p->pLeft);
-        printf("[%02d(%2d)]", p->c->ID, p->balance);
-        printf("cap = %d conso = %d\n", p->c->cap, p->c->conso);
+        printf("%d;%lld;%lld\n", p->c->ID, p->c->cap, p->c->conso);
         infix(p->pRight);
     }
 }
-
+/*
 void remplissage(Tree* pRoot, FILE* file){
     if(pRoot != NULL){
         remplissage(pRoot->pLeft, file);
-        fprintf(file, "%d:%d:%d\n", pRoot->c->ID, pRoot->c->cap, pRoot->c->conso);
+        fprintf(file, "%d:%lld:%lld\n", pRoot->c->ID, pRoot->c->cap, pRoot->c->conso);
         remplissage(pRoot->pRight, file);
     }
-}
+}*/
 
 int main(){
     Chainon* new;
     Tree* AVL;
     int id, h=0;
-    long CAP, CONSO;
-    while(scanf("%d;%ld;%ld\n", &id, &CAP,&CONSO) == 3){
+    long long CAP;
+    long long CONSO;
+    while(scanf("%d;%lld;%lld\n", &id, &CAP,&CONSO) == 3){
         new = createChainon(id, CAP, CONSO);
         AVL = insertAVL(AVL, new, &h);
     }
     infix(AVL);
-    printf("\n");
-
+/*
     FILE* file;
     file = fopen("resultat.csv","w");
     if (file == NULL){
@@ -206,6 +205,6 @@ int main(){
     }
     fprintf(file, "ID:cap:conso\n");
     remplissage(AVL, file);
-    printf("Fichier CSV créé avec succès : data.csv\n");
+    printf("Fichier CSV créé avec succès : data.csv\n");*/
     return 0;
 }
