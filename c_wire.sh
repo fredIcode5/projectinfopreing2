@@ -48,8 +48,20 @@ done
 
 
 #test compil du c
+exec=0
+cd codeC
+for arg in `ls`
+do
+	if [[ $arg == "exec.exe" ]] ; then
+		exec=1
+	fi
+done
 
+#if [ $exec -eq 0 ] ; then
+	#compil makefile
+#fi
 
+cd ..
 
 
 
@@ -61,7 +73,7 @@ do
 	if [[ $list == "tmp" ]] ; then
 		temp=1
 		cd tmp
-		rm *
+		rm -rf ./*
 		cd ..
 	fi
 	
@@ -85,40 +97,53 @@ if [ $# -ne 3 ] && [ $# -ne 4 ] ; then
 	echo "Erreur : mauvais nombre d'arguments"
 fi
 
+#debut timer
+start_time=$(date +%s%N)
+
 
 
 #recuperation centrale et fichier tmp de la centrale
 fichier=$1
 if [ $# -eq 4 ] ; then
 	centrale=$4
-	#tri centrale
-	#faire fichier tmp de la centrale en particulier
 else
-	centrale=0
+	centrale='.'
 fi
 
 
-tr '-' '0' < "$fichier" > temp && mv temp "$fichier"
+
+#tr '-' '0' < "$fichier" > temp && mv temp "$fichier"
 
 case "$2_$3" in
 	
 	"hvb_comp")
-		grep -E '^[^;]*;[^0;]*;[0;]*;[0]+' "$fichier"|cut -d';' -f 2,7,8 | ./exec 
+		output_file="hvb_comp.csv"
+		echo "ID;capacité;consomation" > "$output_file"
+		cat $fichier | grep -E '^[^;]*;[^-;]*;[-];[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		cat $output_file
+		#cat c-wire_v00.dat | grep -E '^[0-9]+;[0-9]+;-;-;' | tr '-' '0' | cut -d';'  -f 2,7,8 >> "$test.csv"
+		#./exec >> "$output_file"
 		;;
 		
 	"hva_comp")
-		grep -E '^[^;]*;[^;]*;[^0;];[0]+' "$fichier"|cut -d';' -f 3,7,8 | ./exec
+		output_file="hva_comp.csv"
+		cat $fichier | grep -E '^[^;]*;[^;];[^-;];[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		;;
 	
 	"lv_comp")
-		grep -E '^[^;]*;[^;]*;[^;]*;[^0;];[0]+' "$fichier"|cut -d';' -f 4,7,8 | ./exec
+		output_file="lv_comp.csv"
+		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;[^-;]*;[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		;;
 	
 	"lv_indiv")
+		output_file="lv_indiv.csv"
+		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;[-];[^-;]*;'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		echo lv_indiv
 		;;
 	
 	"lv_all")
+		output_file="lv_all.csv"
+		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		echo lv_all
 		#faire le grep
 		#reprendre le fichier résultat
@@ -133,3 +158,14 @@ case "$2_$3" in
 		;;
 		
 esac
+
+# Temps de fin en nanosecondes
+end_time=$(date +%s%N)
+
+# Calculer la durée en millisecondes
+elapsed_time=$(( (end_time - start_time) / 1000000 |bc ))
+
+
+echo "Opération terminée en $elapsed_time millisecondes."
+
+
