@@ -49,7 +49,7 @@ done
 
 #test compil du c
 
-
+make
 
 
 
@@ -92,11 +92,11 @@ if [ $# -eq 4 ] ; then
 	centrale=$4
 	#tri centrale
 else
-	centrale=0
+	centrale="[^;]*"
 fi
 
 
-gcc projetInfoAVL.c -o exec
+
 
 
 
@@ -104,20 +104,26 @@ case "$2_$3" in
 	
 	"hvb_comp")
 	    outputfile="hvb_comp.csv"
-		grep -E '^[^;]*;[^-;]*;[-;]*;[-]+' "$fichier"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec > "$outputfile"  
+		grep -E "^${centrale};[^;]*;[^-;]*;[-];[^;]*;[-];" "$fichier"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec > "$outputfile"  
 		cat $outputfile
 		;;
 		
 	"hva_comp")
-		grep -E '^[^;]*;[^;]*;[^0;];[0]+' "$fichier"|tr '-' '0'|cut -d';' -f 2,7,8|./exec > "$outputfile"
+	    outputfile="hva_comp.csv"
+		grep -E "^${centrale};[^;]*;[^-;]*;[-];[^;]*;[-];" "$fichier"|tr '-' '0'|cut -d';' -f 3,7,8|./exec > "$outputfile"
+		cat $outputfile
 		;;
 	
 	"lv_comp")
-		grep -E '^[^;]*;[^;]*;[^;]*;[^0;];[0]+' "$fichier"|tr '-' '0'|cut -d';' -f 2,7,8|./exec 
+		outputfile="lv_comp.csv"
+		grep -E '^[^;]*;[^;]*;[^;]*;[^-;];[-]+' "$fichier"|tr '-' '0'|cut -d';' -f 4,7,8|./exec  > "$outputfile"
+		cat $outputfile
 		;;
 	
 	"lv_indiv")
-		echo lv_indiv
+		outputfile="lv_indiv.csv"
+		grep -E "^${centrale};[^;]*;[^;]*;[^-;]*;[-];[^;]*;" "$fichier"|tr '-' '0'|cut -d';' -f 4,7,8|./exec > "$outputfile"
+		cat $outputfile
 		;;
 	
 	"lv_all")
