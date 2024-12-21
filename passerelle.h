@@ -19,18 +19,18 @@ typedef struct tree{
 }Tree;
 
 
-int max2(int v1, int v2)
-int min2(int v1, int v2)
-int max3(int v1, int v2, int v3)
-int min3(int v1, int v2, int v3)
-Chainon* createChainon(int id, long long CAP, long long CONSO)
-Tree* createAVL(Chainon* c)
-Tree* rotateLeft(Tree* pRoot)
-Tree* rotateRight(Tree* pRoot)
-Tree* doubleRotateLeft(Tree* pRoot)
-Tree* doubleRotateRight(Tree* pRoot)
-Tree* balanceAVL(Tree* pRoot)
-Tree* insertAVL(Tree* pRoot, Chainon* c, int* h)
-void infix(Tree* p)
+int max2(int v1, int v2);
+int min2(int v1, int v2);
+int max3(int v1, int v2, int v3);
+int min3(int v1, int v2, int v3);
+Chainon* createChainon(int id, long long CAP, long long CONSO);
+Tree* createAVL(Chainon* c);
+Tree* rotateLeft(Tree* pRoot);
+Tree* rotateRight(Tree* pRoot);
+Tree* doubleRotateLeft(Tree* pRoot);
+Tree* doubleRotateRight(Tree* pRoot);
+Tree* balanceAVL(Tree* pRoot);
+Tree* insertAVL(Tree* pRoot, Chainon* c, int* h);
+void infix(Tree* p);
 
 #endif // PASSERELLE_H_INCLUDED
