@@ -1,3 +1,5 @@
+#include "passerelle.h"
+
 int max2(int v1, int v2){
     if(v1 > v2){
         return v1;

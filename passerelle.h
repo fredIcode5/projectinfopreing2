@@ -1,5 +1,5 @@
-#ifndef PASSERELLEJO_H_INCLUDED
-#define PASSERELLEJO_H_INCLUDED
+#ifndef PASSERELLE_H_INCLUDED
+#define PASSERELLE_H_INCLUDED
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -33,4 +33,4 @@ Tree* balanceAVL(Tree* pRoot)
 Tree* insertAVL(Tree* pRoot, Chainon* c, int* h)
 void infix(Tree* p)
 
-#endif // PASSERELLEJO_H_INCLUDED
+#endif // PASSERELLE_H_INCLUDED
