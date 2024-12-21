@@ -119,7 +119,7 @@ case "$2_$3" in
 	"hvb_comp")
 		output_file="hvb_comp.csv"
 		echo "ID;capacité;consomation" > "$output_file"
-		cat $fichier | grep -E '^[^;]*;[^-;]*;[-];[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		cat $fichier | grep -E '^'$centrale';[^-;]*;[-];[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		cat $output_file
 		#cat c-wire_v00.dat | grep -E '^[0-9]+;[0-9]+;-;-;' | tr '-' '0' | cut -d';'  -f 2,7,8 >> "$test.csv"
 		#./exec >> "$output_file"
@@ -127,22 +127,26 @@ case "$2_$3" in
 		
 	"hva_comp")
 		output_file="hva_comp.csv"
-		cat $fichier | grep -E '^[^;]*;[^;];[^-;];[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		echo "ID;capacité;consomation" > "$output_file"
+		cat $fichier | grep -E '^[^;]*;[^;]*;[^-;]*;[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		;;
 	
 	"lv_comp")
 		output_file="lv_comp.csv"
+		echo "ID;capacité;consomation" > "$output_file"
 		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;[^-;]*;[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		;;
 	
 	"lv_indiv")
 		output_file="lv_indiv.csv"
+		echo "ID;capacité;consomation" > "$output_file"
 		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;[-];[^-;]*;'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		echo lv_indiv
 		;;
 	
 	"lv_all")
 		output_file="lv_all.csv"
+		echo "ID;capacité;consomation" > "$output_file"
 		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		echo lv_all
 		#faire le grep
