@@ -1,15 +1,5 @@
 #!/bin/bash
 
-#changer les - en 0 pour le C
-#tr - 0
-
-#filtrer les lignes
-#grep -o MOTIF data.csv 
-
-#tri
-#cat data.txt | grep  | cut -d ';' -f 3,4 | ./exec
-
-
 help(){
 	echo ◦ chemin du fichier de données :
 	echo 	• obligatoire
@@ -42,6 +32,7 @@ for arg in $@
 do
 	if [[ $arg == "-h" ]] ; then
 		help
+		exit 1
 	fi
 done
 
@@ -57,9 +48,13 @@ do
 	fi
 done
 
-#if [ $exec -eq 0 ] ; then
-	#compil makefile
-#fi
+if [ $exec -eq 0 ] ; then
+	make
+	if [ $? -ne 0 ]; then
+    	echo "Erreur dans l'éxécution du Makefile"
+    	exit 2
+	fi
+fi
 
 cd ..
 
@@ -95,60 +90,58 @@ fi
 #test nombre arguments
 if [ $# -ne 3 ] && [ $# -ne 4 ] ; then
 	echo "Erreur : mauvais nombre d'arguments"
+	exit 3
 fi
 
 #debut timer
-start_time=$(date +%s%N)
+start_time=$(date +%s)
 
 
 
-#recuperation centrale et fichier tmp de la centrale
+#recuperation centrale
 fichier=$1
 if [ $# -eq 4 ] ; then
 	centrale=$4
 else
-	centrale='.'
+	centrale="[^;]*"
 fi
 
 
-
-#tr '-' '0' < "$fichier" > temp && mv temp "$fichier"
 
 case "$2_$3" in
 	
 	"hvb_comp")
 		output_file="hvb_comp.csv"
 		echo "ID;capacité;consomation" > "$output_file"
-		cat $fichier | grep -E '^'$centrale';[^-;]*;[-];[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		cat $fichier | grep -E "^${centrale};[^;]*;[^-;]*;[-];[^;]*;[-];"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		cat $output_file
-		#cat c-wire_v00.dat | grep -E '^[0-9]+;[0-9]+;-;-;' | tr '-' '0' | cut -d';'  -f 2,7,8 >> "$test.csv"
-		#./exec >> "$output_file"
 		;;
 		
 	"hva_comp")
 		output_file="hva_comp.csv"
 		echo "ID;capacité;consomation" > "$output_file"
-		cat $fichier | grep -E '^[^;]*;[^;]*;[^-;]*;[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		cat $fichier | grep -E "^${centrale};[^;]*;[^-;]*;[-];[^;]*;[-];"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		cat $output_file
 		;;
 	
 	"lv_comp")
 		output_file="lv_comp.csv"
 		echo "ID;capacité;consomation" > "$output_file"
-		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;[^-;]*;[-];'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		cat $fichier | grep -E "^${centrale};[^;]*;[^;]*;[^-;]*;[^;]*;[-];"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		;;
 	
 	"lv_indiv")
 		output_file="lv_indiv.csv"
 		echo "ID;capacité;consomation" > "$output_file"
-		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;[-];[^-;]*;'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
-		echo lv_indiv
+		cat $fichier | grep -E "^${centrale};[^;]*;[^;]*;[^-;]*;[-];[^;]*;"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		cat $output_file
 		;;
 	
 	"lv_all")
 		output_file="lv_all.csv"
 		echo "ID;capacité;consomation" > "$output_file"
-		cat $fichier | grep -E '^[^;]*;[^;]*;[^;]*;[^-;]*;'|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
-		echo lv_all
+		cat $fichier | grep -E "^${centrale};[^;]*;[^;]*;[^-;]*;[^;]*;[^;]*;"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
+		cat $output_file
 		#faire le grep
 		#reprendre le fichier résultat
 		#faire la différence (capa-conso)
@@ -164,12 +157,12 @@ case "$2_$3" in
 esac
 
 # Temps de fin en nanosecondes
-end_time=$(date +%s%N)
+end_time=$(date +%s)
 
 # Calculer la durée en millisecondes
-elapsed_time=$(( (end_time - start_time) / 1000000 |bc ))
+elapsed_time=$(( (end_time - start_time) |bc ))
 
 
-echo "Opération terminée en $elapsed_time millisecondes."
+echo "Opération terminée en $elapsed_time secondes."
 
 
