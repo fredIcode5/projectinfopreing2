@@ -177,34 +177,29 @@ void infix(Tree* p){
         infix(p->pRight);
     }
 }
-/*
-void remplissage(Tree* pRoot, FILE* file){
-    if(pRoot != NULL){
-        remplissage(pRoot->pLeft, file);
-        fprintf(file, "%d:%lld:%lld\n", pRoot->c->ID, pRoot->c->cap, pRoot->c->conso);
-        remplissage(pRoot->pRight, file);
-    }
-}*/
+
+
 
 int main(){
+    
     Chainon* new;
     Tree* AVL;
     int id, h=0;
-    long long CAP;
-    long long CONSO;
+    long long CAP, CONSO;
     while(scanf("%d;%lld;%lld\n", &id, &CAP,&CONSO) == 3){
         new = createChainon(id, CAP, CONSO);
         AVL = insertAVL(AVL, new, &h);
     }
     infix(AVL);
-/*
-    FILE* file;
-    file = fopen("resultat.csv","w");
-    if (file == NULL){
-        exit;
-    }
-    fprintf(file, "ID:cap:conso\n");
-    remplissage(AVL, file);
-    printf("Fichier CSV créé avec succès : data.csv\n");*/
+    printf("\n");
+
+   //FILE* file;
+   //file = fopen("resultat.csv","w");
+    //if (file == NULL){
+    //   exit;
+   //}
+    //fprintf(file, "ID:cap:conso\n");
+    //remplissage(AVL, file);
+    //printf("Fichier CSV créé avec succès : data.csv\n");
     return 0;
 }
