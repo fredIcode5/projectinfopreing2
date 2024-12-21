@@ -1,9 +1,9 @@
 all: exec clean
 
-main.o: main.c passerellejo.h
+main.o: main.c passerelle.h
 	gcc -c main.c -o main.o
 
-fonctions.o: fonctions.c passerellejo.h
+fonctions.o: fonctions.c passerelle.h
 	gcc -c fonctions.c -o fonctions.o
 
 exec: main.o fonctions.o
