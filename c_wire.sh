@@ -99,7 +99,6 @@ start_time=$(date +%s)
 
 
 #recuperation centrale
-fichier=$1
 if [ $# -eq 4 ] ; then
 	centrale=$4
 else
@@ -111,34 +110,34 @@ fi
 case "$2_$3" in
 	
 	"hvb_comp")
-		output_file="hvb_comp.csv"
+		output_file="tests/hvb_comp.csv"
 		echo "ID;capacité;consomation" > "$output_file"
 		cat $fichier | grep -E "^${centrale};[^;]*;[^-;]*;[-];[^;]*;[-];"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		cat $output_file
 		;;
 		
 	"hva_comp")
-		output_file="hva_comp.csv"
+		output_file="tests/hva_comp.csv"
 		echo "ID;capacité;consomation" > "$output_file"
 		cat $fichier | grep -E "^${centrale};[^;]*;[^-;]*;[-];[^;]*;[-];"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		cat $output_file
 		;;
 	
 	"lv_comp")
-		output_file="lv_comp.csv"
+		output_file="tests/lv_comp.csv"
 		echo "ID;capacité;consomation" > "$output_file"
 		cat $fichier | grep -E "^${centrale};[^;]*;[^;]*;[^-;]*;[^;]*;[-];"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		;;
 	
 	"lv_indiv")
-		output_file="lv_indiv.csv"
+		output_file="tests/lv_indiv.csv"
 		echo "ID;capacité;consomation" > "$output_file"
 		cat $fichier | grep -E "^${centrale};[^;]*;[^;]*;[^-;]*;[-];[^;]*;"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		cat $output_file
 		;;
 	
 	"lv_all")
-		output_file="lv_all.csv"
+		output_file="tests/lv_all.csv"
 		echo "ID;capacité;consomation" > "$output_file"
 		cat $fichier | grep -E "^${centrale};[^;]*;[^;]*;[^-;]*;[^;]*;[^;]*;"|tr '-' '0'|cut -d';' -f 2,7,8| ./exec >> "$output_file"
 		cat $output_file
