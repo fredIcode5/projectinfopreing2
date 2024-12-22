@@ -1,5 +1,6 @@
 #include "passerelle.h"
 
+// cherche la valeur la plus grande valeur entre v1 et v2
 int max2(int v1, int v2){
     if(v1 > v2){
         return v1;
@@ -7,6 +8,7 @@ int max2(int v1, int v2){
     return v2;
 }
 
+// cherche la valeur la plus petite valeur entre v1 et v2
 int min2(int v1, int v2){
     if(v1 < v2){
         return v1;
@@ -14,14 +16,17 @@ int min2(int v1, int v2){
     return v2;
 }
 
+// cherche la valeur la plus grande valeur entre v1 et v2 et v3
 int max3(int v1, int v2, int v3){
-    return max2(v1, min2(v2, v3));
+    return max2(v1, max2(v2, v3)); // appelle la fonction max2 pour trouver la plus grande valeur entre v2 et v3 puis le max entre v1 et ce qui a été returner en par max2(v2,v3)
 }
 
+// cherche la valeur la plus petite valeur entre v1 et v2 et v3
 int min3(int v1, int v2, int v3){
     return min2(v1, min2(v2, v3));
 }
 
+//creation d'un chainon pour AVL
 Chainon* createChainon(int id, long long CAP, long long CONSO){
     Chainon* new = malloc(sizeof(Chainon));
     if(new == NULL){
@@ -33,6 +38,7 @@ Chainon* createChainon(int id, long long CAP, long long CONSO){
     return new; 
 }
 
+//creer un noeud AVL avec la variable de type Chainon passer en paramètre
 Tree* createAVL(Chainon* c){
     Tree* pRoot = malloc(sizeof(Tree));
     if(pRoot == NULL){
@@ -45,6 +51,7 @@ Tree* createAVL(Chainon* c){
     return pRoot;
 }
 
+//fait une rotation simple vers la gauche
 Tree* rotateLeft(Tree* pRoot){
     if(pRoot == NULL  || pRoot->pRight == NULL){
         exit;
@@ -60,6 +67,7 @@ Tree* rotateLeft(Tree* pRoot){
     return pRoot;
 }
 
+//fait une rotation simple vers la droite
 Tree* rotateRight(Tree* pRoot){
     if(pRoot == NULL || pRoot->pLeft == NULL){
         exit;
@@ -75,6 +83,7 @@ Tree* rotateRight(Tree* pRoot){
     return pRoot;
 }
 
+//fait une rotation double vers la gauche
 Tree* doubleRotateLeft(Tree* pRoot){
     if(pRoot == NULL || pRoot->pRight == NULL){
         exit;
@@ -83,6 +92,7 @@ Tree* doubleRotateLeft(Tree* pRoot){
     return rotateLeft(pRoot);
 }
 
+//fait une rotation double vers la gauche
 Tree* doubleRotateRight(Tree* pRoot){
     if(pRoot == NULL || pRoot->pLeft == NULL){
         exit;
@@ -91,6 +101,7 @@ Tree* doubleRotateRight(Tree* pRoot){
     return rotateRight(pRoot);
 }
 
+//rééquilibre l'AVL passer en paramètre grace à l'indice d'équilibre de chaque noeud de l'arbre
 Tree* balanceAVL(Tree* pRoot){
     if(pRoot == NULL){
         exit;
@@ -120,6 +131,7 @@ Tree* balanceAVL(Tree* pRoot){
     return pRoot;
 }
 
+//insert un noeud avec comme élément de type chainon dans l'AVL + appelle rééquilibrage si nécessaire
 Tree* insertAVL(Tree* pRoot, Chainon* c, int* h){
     if(pRoot == NULL){
         *h = 1;
@@ -155,6 +167,7 @@ Tree* insertAVL(Tree* pRoot, Chainon* c, int* h){
     return pRoot;
 }
 
+//affichage infix de sorte à ce que l'AVL soit afficher dans l'ordre croissant en fonction de l'ID des noeuds
 void infix(Tree* p){
     if(p != NULL){
         infix(p->pLeft);
