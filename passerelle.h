@@ -32,5 +32,6 @@ Tree* doubleRotateRight(Tree* pRoot);
 Tree* balanceAVL(Tree* pRoot);
 Tree* insertAVL(Tree* pRoot, Chainon* c, int* h);
 void infix(Tree* p);
+void libererEspace(Tree* p);
 
 #endif // PASSERELLE_H_INCLUDED
