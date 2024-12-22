@@ -175,3 +175,11 @@ void infix(Tree* p){
         infix(p->pRight);
     }
 }
+
+void libererEspace(Tree* p){
+    if(p != NULL){
+        libererEspace(p->pLeft);
+        libererEspace(p->pRight);
+        free(p);
+    }
+}
