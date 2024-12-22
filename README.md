@@ -7,7 +7,7 @@ Le but de ce projet est de faire une synthèse de données d'un système de dist
 Ce projet s'articule autour de plusieurs dossiers:
 -Dossier principal
   -codeC (contient le code c, h, le makefile et l'éxécutable(non existant au début mais se créer à la première utilisation))
-    -main.c
+    -main.c \n
     -fonctions.c
     -passerelle.h
     -Makefile
