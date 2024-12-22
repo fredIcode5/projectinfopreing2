@@ -10,5 +10,6 @@ int main(){
         AVL = insertAVL(AVL, new, &h);
     }
     infix(AVL);
+    
     return 0;
 }
