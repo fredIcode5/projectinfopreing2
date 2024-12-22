@@ -1,6 +1,6 @@
 # projectinfopreing2
 
-Projet C-Wire
+Projet C-Wire (le projet se trouve dans le dossier projet_cwire sur github)
 
 Le but de ce projet est de faire une synthèse de données d'un système de distribution d'électricité. Cette synthèse pourra se faire à plusieurs niveaux du réseau. Ce réseau est constitué de centrale, d'HVB(station haute tension), d'HVA(station moyenne tension) et LV(station basse tension). Chaque station fournissant de l'énérgie à différents acteurs. Les HVB et HVA n'envoient de l'énergie qu'à des entreprises(comp) quant aux LV ils envoient de l'énergie à des entreprises et des particuliers(indiv).
 
